@@ -13,7 +13,7 @@ public class UserResource {
 	//O tipo de retorno ResponseEntity, é um tipo específico do spring para retornar respostas de requisições web
 	@GetMapping //Tipo GET do HTTP
 	public ResponseEntity<User> findAll(){
-		User user = new User(1L,"Hudson","email@email.com","123");
+		User user = new User("Hudson","email@email.com","988888888", "123456");
 		return ResponseEntity.ok().body(user);
 	}
 }
