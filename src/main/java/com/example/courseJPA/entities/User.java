@@ -1,25 +1,37 @@
 package com.example.courseJPA.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-@Entity
+@Entity //Indica que é uma entidade e será transformada em uma tabela no banco de dados
+@Table(name = "tb_user")
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY) //Indica que será gerada automaticamente no banco
 	private Long id;
 	private String name;
 	private String email;
 	private String phone;
 	private String password;
 	
+	/*Na UML indica que o lado do PEDIDOS(ORDERS) são muitos e no lado do USER(CLIENT) é 1. 
+	 Notação: @OneToMany(com o nome do atributo que está do outro lado da associação, 
+	 que no caso é o está dentro da classe Order, no atributo do tipo User)*/
+	@OneToMany(mappedBy = "client")
+	private List<Order> listOrders = new ArrayList<>();
+	
 	public User() {
+		super();
 	}
 
 	public User(String name, String email, String phone, String password) {
@@ -68,6 +80,10 @@ public class User implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public List<Order> getListOrders() {
+		return listOrders;
+	}	
 
 	@Override
 	public int hashCode() {
@@ -93,6 +109,8 @@ public class User implements Serializable{
 			return false;
 		return true;
 	}
+
+
 	
 	
 }
