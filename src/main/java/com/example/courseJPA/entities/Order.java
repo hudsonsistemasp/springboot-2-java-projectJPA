@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_order") /*Deu erro quando subi a applicação, pois quando vai criar a tabela pelo JPA 
 							com o nome da classe sendo Order, entra em conflito com a palavra reservada do SQL
@@ -27,6 +29,7 @@ public class Order implements Serializable{
 	// Na UML indica que o lado do PEDIDOS(ORDERS) são muitos e no lado do USER(CLIENT) é 1. Notação: @ManyToOne 
 	@ManyToOne 
 	@JoinColumn(name = "client_id") //Nome da chave estrangeira no banco de dados com client
+	@JsonIgnore
 	private User client;
 	
 	public Order() {

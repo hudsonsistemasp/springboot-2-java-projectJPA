@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity //Indica que é uma entidade e será transformada em uma tabela no banco de dados
 @Table(name = "tb_user")
 public class User implements Serializable{
@@ -27,6 +29,7 @@ public class User implements Serializable{
 	/*Na UML indica que o lado do PEDIDOS(ORDERS) são muitos e no lado do USER(CLIENT) é 1. 
 	 Notação: @OneToMany(com o nome do atributo que está do outro lado da associação, 
 	 que no caso é o está dentro da classe Order, no atributo do tipo User)*/
+	
 	@OneToMany(mappedBy = "client")
 	private List<Order> listOrders = new ArrayList<>();
 	
