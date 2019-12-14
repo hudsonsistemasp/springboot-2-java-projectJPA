@@ -29,7 +29,7 @@ public class User implements Serializable{
 	/*Na UML indica que o lado do PEDIDOS(ORDERS) são muitos e no lado do USER(CLIENT) é 1. 
 	 Notação: @OneToMany(com o nome do atributo que está do outro lado da associação, 
 	 que no caso é o está dentro da classe Order, no atributo do tipo User)*/
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> listOrders = new ArrayList<>();
 	
