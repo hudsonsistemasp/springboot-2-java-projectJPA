@@ -1,12 +1,17 @@
 package com.example.courseJPA.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_category")
@@ -17,7 +22,12 @@ public class Category implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-
+	
+	/*Coleções é somente GET, pois não justifica ter método SET e assim trocar 
+	  a nossa lista de produtos em tempo de execução. Apenas ler e remover os elementos*/
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories") //Referência à coleção que está na classe Product e assim criar a tabela intermediária muitos-muitos
+	private Set<Product> products = new HashSet<>();
 
 	public Category() {
 		super();
@@ -45,6 +55,10 @@ public class Category implements Serializable {
 	}
 	
 
+	public Set<Product> getProducts(){
+		return products;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

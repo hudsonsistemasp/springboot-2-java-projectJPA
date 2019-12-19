@@ -1,11 +1,16 @@
 package com.example.courseJPA.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +25,17 @@ public class Product implements Serializable{
 	private String description;
 	private Double price;
 	private String imageUrl;
+	/*1-O set representa um conjunto e garante que não vou ter um mesmo produto com mais de uma categoria por vez.
+	  2-Quando se tem uma associação, quando se é uma coleção(muitos-um, muitos-muitos e etc), 
+	  fazer a instanciação, para garantir que a coleção não comece nula e sim vazia(que é instanciada)
+	  3-Não colocamos a lista no construtor porque já instanciamos ela abaixo
+	  4-@ManyToMany diz que é uma relação muitos para muitos com Category*/
+	
+	@ManyToMany
+	@JoinTable(name = "tb_product_category", 
+	joinColumns = @JoinColumn(name = "tb_product_id"),
+	 inverseJoinColumns = @JoinColumn(name = "category_id"))
+	private Set<Category> categories = new HashSet<>();
 	
 	public Product() {
 		super();
@@ -74,6 +90,10 @@ public class Product implements Serializable{
 		this.imageUrl = imageUrl;
 	}
 
+	public Set<Category> getCategories(){
+		return categories;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
