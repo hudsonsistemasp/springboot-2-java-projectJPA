@@ -2,6 +2,8 @@ package com.example.courseJPA.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.example.courseJPA.entities.enums.OrderStatus;
@@ -43,6 +46,13 @@ public class Order implements Serializable {
 	@JoinColumn(name = "client_id") // Nome da chave estrangeira no banco de dados com client
 	private User client;
 
+	/*Vou fazer uma associação com a classe OrderItem, para eu ter uma operação que vá buscar
+	  os ítens, se é mais de 1 vai ser uma lista, desse Order(pedido)*/
+	@OneToMany(mappedBy = "id.order") //Atributo que está na classe OrderItem e que aponta para a OrderItemPK. Agora meus pedidos conhece os itens dele
+	private Set<OrderItem> items = new HashSet<>();
+	
+	
+	
 	public Order() {
 		super();
 	}
@@ -54,7 +64,8 @@ public class Order implements Serializable {
 		setOrderStatus(orderStatus);
 		this.client = client;
 	}
-
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -87,6 +98,10 @@ public class Order implements Serializable {
 	public void setClient(User client) {
 		this.client = client;
 	}
+	
+	public Set<OrderItem> getOrderItens(){
+		return items;
+	}	
 
 	@Override
 	public int hashCode() {

@@ -7,15 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.example.courseJPA.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_order_item")
 public class OrderItem implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-	//Colocar o id identificador dessa classe, que foi construido na classe OrderItemPK
+	//Colocar o (id) identificador dessa classe, que foi construido na classe OrderItemPK
 	@EmbeddedId
-	private OrderItemPK id;//E é através desse id que vamos correlacionar o produto e pedido aqui dentro, no construtor
+	private OrderItemPK id = new OrderItemPK();//E é através desse id que vamos correlacionar o produto e pedido aqui dentro, no construtor
+	//Toda vez que eu criar uma classe uma classe auxiliar com chave composta, não esquecer de instanciar para não vir NULLPOINTER
 	
 	private Integer quantity;
 	private Double price;
@@ -30,6 +32,7 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 	
+	@JsonIgnore //Para não dar bug no Jackson que serializa o JSON da requisição
 	//Para acesso ao objeto OrderItemPK
 	public Order getOrder() {
 		return id.getOrder();

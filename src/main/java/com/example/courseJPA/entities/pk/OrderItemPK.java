@@ -14,12 +14,12 @@ import com.example.courseJPA.entities.Product;
 public class OrderItemPK implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	//Pedido e produto terão relacionamento muitos para um com pedido-produto(OrderItemPK)
+	//Pedido e produto terão relacionamento muitos para um com OrderItemPK - pedido-produto
 	@ManyToOne
-	@JoinColumn(name = "order_id")//Nome da chave estrangeira na tabela do banco relacional
+	@JoinColumn(name = "product_id")//Nome da chave estrangeira na tabela do banco relacional
 	private Product product;
 	@ManyToOne
-	@JoinColumn(name = "product_id")
+	@JoinColumn(name = "order_id")
 	private Order order;
 	
 	//Essa classe, em especial, não terá o construtor
