@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.example.courseJPA.entities.enums.OrderStatus;
@@ -48,17 +50,17 @@ public class Order implements Serializable {
 
 	/*Vou fazer uma associação com a classe OrderItem, para eu ter uma operação que vá buscar
 	  os ítens, se é mais de 1 vai ser uma lista, desse Order(pedido)*/
-	@OneToMany(mappedBy = "id.order") //Atributo que está na classe OrderItem e que aponta para a OrderItemPK. Agora meus pedidos conhece os itens dele
+	@OneToMany(mappedBy = "id.order") //Atributo que está na classe OrderItem e que aponta para a OrderItemPK. Agora meus pedidos conhecem os itens dele
 	private Set<OrderItem> items = new HashSet<>();
 	
-	
+	//Vou falar para o meu pedido que ele tem um pagamento
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)//Cascade coloco o mesmo ID do pedido no pagamento para manter esse vínculo
+	private Payment payment;
 	
 	public Order() {
-		super();
 	}
 
 	public Order(Integer id, Instant moment, OrderStatus orderStatus, User client) {
-		super();
 		this.id = id;
 		this.moment = moment;
 		setOrderStatus(orderStatus);
@@ -102,6 +104,14 @@ public class Order implements Serializable {
 	public Set<OrderItem> getOrderItens(){
 		return items;
 	}	
+	
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
 
 	@Override
 	public int hashCode() {

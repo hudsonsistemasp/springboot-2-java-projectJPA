@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_product")
@@ -37,12 +40,15 @@ public class Product implements Serializable{
 	 inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 	
+	@OneToMany(mappedBy="id.product")//Atributo que está na classe OrderItem como ID e apontando para a classe PRODUCT
+	private Set<OrderItem> Items = new HashSet<OrderItem>();
+	/*FAZER O GET para esse, mas para cada OrderItem, eu quero o pedido que está associado a esse produto,
+	 *e não os itens do pedido que esse produto está associado. Isso não faz sentido na vida real*/
+	
 	public Product() {
-		super();
 	}
 
 	public Product(Integer id, String name, String description, Double price, String imageUrl) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -92,6 +98,16 @@ public class Product implements Serializable{
 
 	public Set<Category> getCategories(){
 		return categories;
+	}
+	
+	@JsonIgnore
+	public Set<Order> getOrders(){
+		//dentro dos itens de pedido(OrderItem), eu tenho os produtos, logo posso fazer o get nele
+		Set<Order> setOrders = new HashSet<>();
+		for(OrderItem listOrderItem : Items) {
+			setOrders.add(listOrderItem.getOrder());
+		}
+		return setOrders;
 	}
 	
 	@Override

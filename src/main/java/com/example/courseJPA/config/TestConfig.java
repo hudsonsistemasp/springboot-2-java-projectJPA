@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import com.example.courseJPA.entities.Category;
 import com.example.courseJPA.entities.Order;
 import com.example.courseJPA.entities.OrderItem;
+import com.example.courseJPA.entities.Payment;
 import com.example.courseJPA.entities.Product;
 import com.example.courseJPA.entities.User;
 import com.example.courseJPA.entities.enums.OrderStatus;
@@ -85,7 +86,6 @@ public class TestConfig implements CommandLineRunner{
 		p1.getCategories().add(cat2);
 		p2.getCategories().add(cat1);
 		p3.getCategories().add(cat3);
-		p3.getCategories().add(cat3);
 		p4.getCategories().add(cat3);
 		p5.getCategories().add(cat2);
 		productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
@@ -98,6 +98,17 @@ public class TestConfig implements CommandLineRunner{
 		OrderItem oi5 = new OrderItem(o4, p2, 2, p2.getPrice());
 		OrderItem oi6 = new OrderItem(o3, p5, 4, p5.getPrice());
 		orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4,oi5,oi6));
+		
+		//Agora vou criar um pagamento
+		Payment payment = new Payment(null, Instant.parse("2019-07-21T00:42:10Z"), o2);
+		/*Agora não mando o repository do payment salvar, mas sim o do order, pois só assim associo
+		e o cascade que está na classe Order irá associar o ID dela na ID do pagamento. Tanto que no
+		parâmetro do construtor passamos null para que o JPA gerencie isso. */
+		
+		/*Agora vou associar um pagamento a uma Order e mandar o repository do Order salvar
+		  e com isso nascerá a associação dos ID´S*/
+		o2.setPayment(payment);
+		orderRepository.save(o2);
 		
 		
 	}	
