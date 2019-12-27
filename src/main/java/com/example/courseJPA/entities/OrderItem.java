@@ -60,6 +60,12 @@ public class OrderItem implements Serializable{
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	//No Java EE, o que vale é o prefixo GET e assim faz ir para o JSON
+	public Double getSubTotal() {
+		return quantity * price;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

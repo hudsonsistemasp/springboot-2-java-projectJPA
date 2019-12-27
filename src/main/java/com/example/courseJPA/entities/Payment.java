@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_payment")
 public class Payment implements Serializable{
@@ -20,6 +22,7 @@ public class Payment implements Serializable{
 	private Integer id;
 	private Instant moment;
 	
+	@JsonIgnore
 	@OneToOne//Por que pagamento depende de um pedido, já pedido pode ser 0 ou 1 e não precisa daquele para ser gravado no banco
 	private Order order;
 	
