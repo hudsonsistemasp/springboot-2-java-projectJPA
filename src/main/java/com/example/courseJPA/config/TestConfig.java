@@ -69,11 +69,12 @@ public class TestConfig implements CommandLineRunner{
 		User user1 = new User("Maria Brown", "maria@gmail.com", "988888888", "123456");
 		User user2 = new User("Alex Green", "alex@gmail.com", "977777777", "123456");
 		User user3 = new User("James Brown", "jms@gmail.com", "966666666", "123456");
-		
+		User user4 = new User("Kurt Cobain", "nirvana@rock.com", "78785544", "rockNirvana");
+				
 		//5-Agora chamo quem é responsável pelas operações com a entidade
 		productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
-		userRepository.saveAll(Arrays.asList(user1, user2, user3));
+		userRepository.saveAll(Arrays.asList(user1, user2, user3, user4));
 		
 		//Associando um cliente a um pedido no paradgima orientado a objeto
 		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.DELIVERED, user1);

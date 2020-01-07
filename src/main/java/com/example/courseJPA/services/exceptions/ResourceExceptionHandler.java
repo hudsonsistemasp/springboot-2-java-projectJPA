@@ -16,13 +16,21 @@ import com.example.courseJPA.resources.exceptions.StandardError;
 @ControllerAdvice //intercepta as exceções que acontecerem para que esse objeto possa executar o possível tratamento
 public class ResourceExceptionHandler {
 	
-	//Notation que é capaz de interceptar a requisição que deu a exceção com o parâmetro da classe que pega a exceção
+	//Notation que é capaz de interceptar a requisição que deu a exceção, com o parâmetro da classe que pega a exceção: ResourceNotFoundException
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException ex, HttpServletRequest request){
 		String error = "Resource not Found";
 		HttpStatus status = HttpStatus.NOT_FOUND;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, ex.getMessage(), request.getRequestURI());
 		//Para retornar uma resposta com o código personalizado, usamos o .status
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<StandardError> database(DatabaseException ex, HttpServletRequest request){
+		String error = "Database error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, ex.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
 }
