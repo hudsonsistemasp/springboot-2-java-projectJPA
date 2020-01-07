@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.courseJPA.entities.User;
 import com.example.courseJPA.repositories.UserRepository;
+import com.example.courseJPA.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -21,7 +22,8 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> objUser = userRepository.findById(id);
-		return objUser.get();
+		//return objUser.get();//Dá erro de código 500, caso o objeto não seja encontrado
+		return objUser.orElseThrow(() -> new ResourceNotFoundException(id));//Faz o papel do get, mas se der erro lança a exceção personalizada
 	}
 	
 	public User insert(User user) {
